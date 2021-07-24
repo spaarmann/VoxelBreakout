@@ -78,30 +78,27 @@ public class Level : MonoBehaviour {
 	private void UpdateStabilityOfVoxels(Voxel changedVoxel) {
 		if (IsVoxelStable(changedVoxel))
 			return;
-
-		
 	}
 
 	private bool IsVoxelStable(Voxel vox) {
-		if (this[vox.position] = null)
+		if (this[vox.position] == null)
 			return false;
 
 		NeighbourPositions neighbourPositions = new NeighbourPositions(vox.position);
 
-		if (this[neighbourPositions.down] != null)
+		// Voxel touches the ground
+		if (!IsValidPos(neighbourPositions.down))
+			return true;
+		else if (this[neighbourPositions.down] != null)
 			return true;
 
 		int numberDirectNeighbours = 0;
 
-		Voxel up = this[neighbourPositions.up];
-		if (up != null) numberDirectNeighbours++;
-		Voxel left = this[neighbourPositions.left];
-		if (left != null) numberDirectNeighbours++;
-		Voxel right = this[neighbourPositions.right];
-		if (right != null) numberDirectNeighbours++;
-		Voxel forward = this[neighbourPositions.forward];
-		if (forward != null) numberDirectNeighbours++;
-		if (this[neighbourPositions.backward] != null) numberDirectNeighbours++;
+		if (IsValidPos(neighbourPositions.up) && this[neighbourPositions.up] != null) numberDirectNeighbours++;
+		if (IsValidPos(neighbourPositions.left) && this[neighbourPositions.left] != null) numberDirectNeighbours++;
+		if (IsValidPos(neighbourPositions.right) && this[neighbourPositions.right] != null) numberDirectNeighbours++;
+		if (IsValidPos(neighbourPositions.forward) && this[neighbourPositions.forward] != null) numberDirectNeighbours++;
+		if (IsValidPos(neighbourPositions.backward) && this[neighbourPositions.backward] != null) numberDirectNeighbours++;
 
 		if(numberDirectNeighbours >= 2)
 			return true;
