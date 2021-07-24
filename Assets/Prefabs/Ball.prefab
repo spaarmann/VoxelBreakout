@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2390049792067064236}
   m_Layer: 0
   m_Name: Ball
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fd375c37f6aa9546af4441d1fa767ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keepVelocityAfterCollision: 0
+  keepVelocityAfterCollision: 1
 --- !u!33 &207755905894574835
 MeshFilter:
   m_ObjectHideFlags: 0

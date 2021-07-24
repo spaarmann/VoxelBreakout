@@ -26,7 +26,7 @@ public class Voxel : MonoBehaviour {
 	}
 
 	private void OnCollisionEnter(Collision col) {
-		if (col.relativeVelocity.magnitude >= breakSpeedThreshold) {
+		if (col.gameObject.CompareTag("Projectile") && col.relativeVelocity.magnitude >= breakSpeedThreshold) {
 			level.OnVoxelHit(this);
 		}
 	}
