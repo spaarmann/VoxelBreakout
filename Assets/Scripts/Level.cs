@@ -2,9 +2,17 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
+public enum LevelShape {
+	ParabolicDown,
+	ParabolicUp,
+	ParabolicSaddel,
+}
+
 public class Level : MonoBehaviour {
 	public Voxel voxelPrefab;
 	public int3 levelSize;
+
+	public LevelShape levelShape;
 
 	public float hollowHeightAdjustment = 4f;
 
@@ -130,6 +138,16 @@ public class Level : MonoBehaviour {
 		return false;
 	}
 
-	private float EvaluateHeightmap(float normX, float normZ) =>
-		1f - (Mathf.Pow(2f * normX - 1f, 2f) + Mathf.Pow(2f * normZ - 1f, 2f));
+	private float EvaluateHeightmap(float normX, float normZ) {
+		switch (levelShape) {
+			case LevelShape.ParabolicDown:
+				return 1f - (Mathf.Pow(2f * normX - 1f, 2f) + Mathf.Pow(2f * normZ - 1f, 2f));
+			case LevelShape.ParabolicUp:
+				return 1.3f * (Mathf.Pow(2f * normX - 1f, 2f) + Mathf.Pow(2f * normZ - 1f, 2f));
+			case LevelShape.ParabolicSaddel:
+				return 0.2f + (Mathf.Pow(2f * normX - 1f, 2f) - Mathf.Pow(2f * normZ - 1f, 2f));
+			default:
+				return 0f;
+		}
+	}
 }
