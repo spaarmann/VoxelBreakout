@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -78,6 +79,29 @@ public class Level : MonoBehaviour {
 	private void UpdateStabilityOfVoxels(Voxel changedVoxel) {
 		if (IsVoxelStable(changedVoxel))
 			return;
+
+		Stack<int3> dirtyPositions = new Stack<int3>();
+
+		NeighbourPositions neighbourPositions = new NeighbourPositions(changedVoxel.position);
+		foreach (int3 position in neighbourPositions) {
+			if (IsValidPos(position) && this[position] != null)
+				dirtyPositions.Push(position);
+		}
+
+		while (dirtyPositions.Count > 0) {
+			int3 dirtyPosition = dirtyPositions.Pop();
+			if (!IsVoxelStable(this[dirtyPosition])) {
+				this[dirtyPosition].Fall();
+				this[dirtyPosition] = null;
+
+				neighbourPositions = new NeighbourPositions(dirtyPosition);
+				foreach (int3 position in neighbourPositions) {
+					if(IsValidPos(position) && this[position] != null)
+						dirtyPositions.Push(position);
+				}
+			}
+
+		}
 	}
 
 	private bool IsVoxelStable(Voxel vox) {
