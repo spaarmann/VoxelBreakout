@@ -5,7 +5,15 @@ using UnityEngine;
 public class Voxel : MonoBehaviour {
 	private new Rigidbody rigidbody;
 
-	public int3 position;
+	[field: SerializeField, HideInInspector]
+	public int3 position { get; private set; }
+	[field: SerializeField, HideInInspector]
+	public Level level { get; private set; }
+
+	public void Initialize(Level lvl, int3 pos) {
+		position = pos;
+		level = lvl;
+	}
 
 	private void Awake() {
 		rigidbody = GetComponent<Rigidbody>();
@@ -13,5 +21,9 @@ public class Voxel : MonoBehaviour {
 
 	public void Fall() {
 		rigidbody.isKinematic = false;
+	}
+
+	private void OnCollisionEnter(Collision _) {
+		level.OnVoxelHit(this);
 	}
 }

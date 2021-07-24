@@ -7,9 +7,11 @@ public class Level : MonoBehaviour {
 
 	public float hollowHeightAdjustment = 4f;
 
+	[SerializeField, HideInInspector]
 	private Voxel[] voxels;
 
 	private int VoxelIdx(int3 v) => v.x + levelSize.x * (v.z + levelSize.z * v.y);
+	private bool IsValidPos(int3 v) => math.all(v >= 0 & v < levelSize);
 
 	public Voxel this[int3 v] {
 		get => voxels[VoxelIdx(v)];
@@ -50,7 +52,7 @@ public class Level : MonoBehaviour {
 						continue;
 
 					Voxel spawnedVoxel = Instantiate(voxelPrefab, transform);
-					spawnedVoxel.position = new int3(x, y, z);
+					spawnedVoxel.Initialize(this, new int3(x, y, z));
 
 					spawnedVoxel.gameObject.name = $"Voxel {x},{y},{z}";
 					spawnedVoxel.transform.localPosition = spawnPosition;
@@ -62,7 +64,18 @@ public class Level : MonoBehaviour {
 		}
 	}
 
-	private void updateStabilityOfVoxels(Voxel changedVoxel) {
+	public void OnVoxelHit(Voxel voxel) {
+		// Remove the voxel that was hit from the grid
+		this[voxel.position] = null;
+
+		// Destroy the voxel
+		Destroy(voxel.gameObject);
+
+		// Possibly cause neighboring voxels to start falling
+		UpdateStabilityOfVoxels(voxel);
+	}
+
+	private void UpdateStabilityOfVoxels(Voxel changedVoxel) {
 		if (IsVoxelStable(changedVoxel))
 			return;
 
