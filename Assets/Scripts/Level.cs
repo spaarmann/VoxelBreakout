@@ -1,8 +1,9 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Level : MonoBehaviour {
 	public GameObject voxelPrefab;
-	public Vector3 levelSize;
+	public int3 levelSize;
 
 	public float hollowHeightAdjustment = 4f;
 
@@ -14,12 +15,12 @@ public class Level : MonoBehaviour {
 		}
 
 		BoxCollider voxelCollider = voxelPrefab.GetComponentInChildren<BoxCollider>();
-		Vector3 voxelSize = Vector3.Scale(voxelCollider.size, voxelCollider.transform.lossyScale);
+		float3 voxelSize = voxelCollider.size * (float3) voxelCollider.transform.lossyScale;
 
 		for (int y = 0; y < levelSize.y; y++) {
 			for (int z = 0; z < levelSize.z; z++) {
 				for (int x = 0; x < levelSize.x; x++) {
-					Vector3 spawnPosition = Vector3.Scale(new Vector3(x, y, z), voxelSize);
+					float3 spawnPosition = new float3(x, y, z) * voxelSize;
 
 					float normX = x / (float) levelSize.x;
 					float normY = y / (float) levelSize.y;
