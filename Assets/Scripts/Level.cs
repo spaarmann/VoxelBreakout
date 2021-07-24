@@ -90,7 +90,7 @@ public class Level : MonoBehaviour {
 
 		while (dirtyPositions.Count > 0) {
 			int3 dirtyPosition = dirtyPositions.Pop();
-			if (!IsVoxelStable(this[dirtyPosition])) {
+			if (this[dirtyPosition] != null && !IsVoxelStable(this[dirtyPosition])) {
 				this[dirtyPosition].Fall();
 				this[dirtyPosition] = null;
 
