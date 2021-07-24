@@ -3,6 +3,8 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Voxel : MonoBehaviour {
+	public float breakSpeedThreshold = 10f;
+
 	private new Rigidbody rigidbody;
 
 	[field: SerializeField, HideInInspector]
@@ -23,7 +25,9 @@ public class Voxel : MonoBehaviour {
 		rigidbody.isKinematic = false;
 	}
 
-	private void OnCollisionEnter(Collision _) {
-		level.OnVoxelHit(this);
+	private void OnCollisionEnter(Collision col) {
+		if (col.relativeVelocity.magnitude >= breakSpeedThreshold) {
+			level.OnVoxelHit(this);
+		}
 	}
 }
