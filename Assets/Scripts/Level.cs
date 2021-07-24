@@ -23,8 +23,11 @@ public class Level : MonoBehaviour {
 			        float normY = y / (float) levelSize.y;
 			        float normZ = z / (float) levelSize.z;
 
-			        if (normY > (1f - (Mathf.Pow(2f * normX - 1f, 2f) + Mathf.Pow(2f * normZ - 1f, 2f))))
-				        continue;
+					if (normY > (1f - (Mathf.Pow(2f * normX - 1f, 2f) + Mathf.Pow(2f * normZ - 1f, 2f))))
+						continue;
+					// turns the structure hollow
+					if ((y + 12) / (float)levelSize.y < (1f - (Mathf.Pow(2f * normX - 1f, 2f) + Mathf.Pow(2f * normZ - 1f, 2f))))
+						continue;
 
 			        GameObject spawnedVoxel = Instantiate(voxelPrefab, transform);
 			        spawnedVoxel.name = $"Voxel {x},{y},{z}";
