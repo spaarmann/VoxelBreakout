@@ -38,7 +38,7 @@ public class NeighbourPositions : IEnumerable<int3> {
                     case 3: return n.right;
                     case 4: return n.down;
                     case 5: return n.up;
-                    default: throw new OhNoException();
+                    default: throw new OhNoException("Oh no!");
                 }
             }
         }

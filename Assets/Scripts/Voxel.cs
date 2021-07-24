@@ -25,9 +25,12 @@ public class Voxel : MonoBehaviour {
 		rigidbody.isKinematic = false;
 	}
 
-	private void OnCollisionEnter(Collision col) {
-		if (col.gameObject.CompareTag("Projectile") && col.relativeVelocity.magnitude >= breakSpeedThreshold) {
-			level.OnVoxelHit(this);
+	private void OnTriggerEnter(Collider other) {
+		if (other.gameObject.CompareTag("Projectile")){
+			Vector3 relativeVelocity = other.gameObject.GetComponent<Rigidbody>().velocity - rigidbody.velocity;
+			if (relativeVelocity.magnitude >= breakSpeedThreshold) {
+				level.OnVoxelHit(this);
+			}
 		}
 	}
 }
