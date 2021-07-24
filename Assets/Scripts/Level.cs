@@ -50,6 +50,8 @@ public class Level : MonoBehaviour {
 						continue;
 
 					Voxel spawnedVoxel = Instantiate(voxelPrefab, transform);
+					spawnedVoxel.position = new int3(x, y, z);
+
 					spawnedVoxel.gameObject.name = $"Voxel {x},{y},{z}";
 					spawnedVoxel.transform.localPosition = spawnPosition;
 					spawnedVoxel.transform.localRotation = Quaternion.identity;
@@ -58,6 +60,40 @@ public class Level : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	private void updateStabilityOfVoxels(Voxel changedVoxel) {
+		if (IsVoxelStable(changedVoxel))
+			return;
+
+		
+	}
+
+	private bool IsVoxelStable(Voxel vox) {
+		if (this[vox.position] = null)
+			return false;
+
+		NeighbourPositions neighbourPositions = new NeighbourPositions(vox.position);
+
+		if (this[neighbourPositions.down] != null)
+			return true;
+
+		int numberDirectNeighbours = 0;
+
+		Voxel up = this[neighbourPositions.up];
+		if (up != null) numberDirectNeighbours++;
+		Voxel left = this[neighbourPositions.left];
+		if (left != null) numberDirectNeighbours++;
+		Voxel right = this[neighbourPositions.right];
+		if (right != null) numberDirectNeighbours++;
+		Voxel forward = this[neighbourPositions.forward];
+		if (forward != null) numberDirectNeighbours++;
+		if (this[neighbourPositions.backward] != null) numberDirectNeighbours++;
+
+		if(numberDirectNeighbours >= 2)
+			return true;
+		
+		return false;
 	}
 
 	private float EvaluateHeightmap(float normX, float normZ) =>
