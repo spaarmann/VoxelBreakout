@@ -51,6 +51,9 @@ MonoBehaviour:
   voxelLayer:
     serializedVersion: 2
     m_Bits: 8
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 0
   maxCollisions: 3
   speed: 0
 --- !u!33 &207755905894574835
@@ -111,7 +114,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5773610031208576455}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5

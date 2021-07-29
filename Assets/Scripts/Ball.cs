@@ -5,6 +5,7 @@ using System.Linq;
 public class Ball : MonoBehaviour {
 	public bool keepVelocityAfterCollision = false;
 	public LayerMask voxelLayer;
+	public LayerMask wallLayer;
 	public int maxCollisions = 3;
 	public float speed;
 	public static float timeout = 0.5F;
@@ -33,13 +34,17 @@ public class Ball : MonoBehaviour {
 
 	private void OnTriggerEnter(Collider other) {
 		lastCollisionTime = Time.time;
-		if (numberOfCollisions < maxCollisions) {
+
+		if (!other.isTrigger)
+			return;
+
+		if ((1 << other.gameObject.layer) == voxelLayer && numberOfCollisions < maxCollisions) {
 			numberOfCollisions++;
 			return;
 		}
 
 		numberOfCollisions = 0;
-		RaycastHit[] hits = Physics.SphereCastAll(rigidbody.position - rigidbody.velocity * 0.1f, sphereCollider.radius, rigidbody.velocity.normalized, rigidbody.velocity.magnitude * 1.5f, ~voxelLayer);
+		RaycastHit[] hits = Physics.SphereCastAll(rigidbody.position - rigidbody.velocity * 0.1f, sphereCollider.radius, rigidbody.velocity.normalized, rigidbody.velocity.magnitude * 1.5f);
 		RaycastHit desiredHit = hits.FirstOrDefault(elem => elem.collider == other);
 		if (desiredHit.collider != null) {
 			rigidbody.velocity = GetUpdatedVelocity(sphereCollider.radius, desiredHit);
