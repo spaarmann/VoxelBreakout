@@ -39,7 +39,7 @@ public class Ball : MonoBehaviour {
 		}
 
 		numberOfCollisions = 0;
-		RaycastHit[] hits = Physics.SphereCastAll(rigidbody.position - rigidbody.velocity * 0.1f, sphereCollider.radius, rigidbody.velocity.normalized, rigidbody.velocity.magnitude * 3, ~voxelLayer);
+		RaycastHit[] hits = Physics.SphereCastAll(rigidbody.position - rigidbody.velocity * 0.1f, sphereCollider.radius, rigidbody.velocity.normalized, rigidbody.velocity.magnitude * 1.5f, ~voxelLayer);
 		RaycastHit desiredHit = hits.FirstOrDefault(elem => elem.collider == other);
 		if (desiredHit.collider != null) {
 			rigidbody.velocity = GetUpdatedVelocity(sphereCollider.radius, desiredHit);
@@ -53,11 +53,6 @@ public class Ball : MonoBehaviour {
 		}
 	}
 
-	private void OnCollisionStay(Collision col) {
-		if (keepVelocityAfterCollision) {
-			rigidbody.AddForce(-col.impulse, ForceMode.Impulse);
-		}
-	}
 	private Vector3 GetUpdatedVelocity(float sphereRadius, RaycastHit hitInfo) {
 		Vector3 updatedVelocity = Vector3.Reflect(this.rigidbody.velocity.normalized, hitInfo.normal) * this.speed;
 		
