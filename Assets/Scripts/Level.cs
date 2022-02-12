@@ -44,10 +44,12 @@ public class Level : MonoBehaviour {
 		BoxCollider voxelCollider = voxelPrefab.GetComponentInChildren<BoxCollider>();
 		float3 voxelSize = voxelCollider.size * (float3)voxelCollider.transform.lossyScale;
 
+		int3 xzCenteredSpawnpositionOffset = levelSize / 2 - new int3(0, levelSize.y / 2, 0);
+
 		for (int y = 0; y < levelSize.y; y++) {
 			for (int z = 0; z < levelSize.z; z++) {
 				for (int x = 0; x < levelSize.x; x++) {
-					float3 spawnPosition = new float3(x, y, z) * voxelSize;
+					float3 spawnPosition = (new float3(x, y, z) - xzCenteredSpawnpositionOffset) * voxelSize;
 
 					float normX = x / (float)levelSize.x;
 					float normY = y / (float)levelSize.y;
